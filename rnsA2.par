@@ -15,15 +15,15 @@ ActiveThorns = "NaNChecker"
 CartGrid3D::type         = "coordbase"
 CartGrid3D::domain       = "full"
 CartGrid3D::avoid_origin = "no"
-CoordBase::xmin =-30.0
-CoordBase::ymin =-30.0
+CoordBase::xmin =-240.0
+CoordBase::ymin =-240.0
 CoordBase::zmin =   0.0
-CoordBase::xmax = 30.0
-CoordBase::ymax = 30.0
-CoordBase::zmax = 30.0
-CoordBase::dx   = 3.0
-CoordBase::dy   = 3.0
-CoordBase::dz   = 3.0
+CoordBase::xmax = 240.0
+CoordBase::ymax = 240.0
+CoordBase::zmax = 240.0
+CoordBase::dx   = 8.0
+CoordBase::dy   = 8.0
+CoordBase::dz   = 8.0
 
 CoordBase::boundary_size_x_lower        = 3
 CoordBase::boundary_size_y_lower        = 3
@@ -31,7 +31,7 @@ CoordBase::boundary_size_z_lower        = 3
 CoordBase::boundary_size_x_upper        = 3
 CoordBase::boundary_size_y_upper        = 3
 CoordBase::boundary_size_z_upper        = 3
-CoordBase::boundary_shiftout_x_lower    = 0
+CoordBase::boundary_shiftout_x_lower    = 1
 CoordBase::boundary_shiftout_y_lower    = 0
 CoordBase::boundary_shiftout_z_lower    = 1
 CoordBase::boundary_shiftout_x_upper    = 0
@@ -81,7 +81,7 @@ CarpetInterp::check_tree_search = "no"
 # ------------------------------------
 # system specific Carpet paramters
 # ------------------------------------
-Carpet::max_refinement_levels    = 2
+Carpet::max_refinement_levels    = 5
 driver::ghost_size               = 3
 Carpet::prolongation_order_space = 5
 Carpet::prolongation_order_time  = 2
@@ -89,8 +89,13 @@ Carpet::prolongation_order_time  = 2
 CarpetRegrid2::regrid_every = 0
 CarpetRegrid2::num_centres  = 1
 
-CarpetRegrid2::num_levels_1 = 2
-CarpetRegrid2::radius_1[1]  =  15.0
+CarpetRegrid2::num_levels_1 = 5
+CarpetRegrid2::symmetry_rotating180   = "yes"
+CarpetRegrid2::radius_1[0]  = 240.0  
+CarpetRegrid2::radius_1[1]  = 120.0
+CarpetRegrid2::radius_1[2]  = 60.0
+CarpetRegrid2::radius_1[3]  = 30.0
+CarpetRegrid2::radius_1[4]  = 15.0
 
 time::dtfac = 0.25
 MoL::ODE_Method             = "rk4"
@@ -108,12 +113,6 @@ NaNChecker::check_vars = "ADMBase::metric ADMBase::lapse ADMBase::shift HydroBas
 # init parameters
 InitBase::initial_data_setup_method = "init_some_levels"
 
-#---------------------------------------------
-#ActiveThorns = "TOVSolver"
-#TOVSolver::TOV_Rho_Central[0] = 1.28e-3
-#TOVSolver::TOV_Gamma          = 2.0
-#TOVSolver::TOV_K              = 100.0
-#---------------------------------------------
 ActiveThorns="Hydro_RNSID"
 
 ADMBase::initial_data  = "hydro_rnsid"
@@ -123,17 +122,16 @@ ADMBase::initial_dtlapse = "zero"
 ADMBase::initial_dtshift = "zero"
 
 
-Hydro_rnsid::save_2Dmodel    = "yes"
-Hydro_rnsid::recover_2Dmodel = "yes"
 
-Hydro_rnsid::accuracy  = 1e-10
-Hydro_rnsid::RNS_rho_min = 1e-11
-Hydro_rnsid::RNS_Gamma = 2
-Hydro_rnsid::RNS_K     = 100
-Hydro_rnsid::rho_central = 0.00107207
-Hydro_rnsid::axes_ratio  = 0.875
-Hydro_rnsid::rotation_type = "diff"
-Hydro_rnsid::A_diff        = 1
+
+
+Hydro_rnsid::rotation_type = "uniform"
+Hydro_rnsid::axes_ratio = 0.58
+Hydro_rnsid::rho_central = 1.28e-3
+Hydro_rnsid::eos_type = "poly"
+Hydro_rnsid::RNS_Gamma = 2.0
+Hydro_rnsid::RNS_K = 100.0
+Hydro_rnsid::save_2Dmodel = "yes"
 Hydro_rnsid::model2D_file  = $parfile + "/A2.h5"
 
 ###################################################
