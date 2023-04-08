@@ -123,7 +123,7 @@ CarpetRegrid2::ensure_proper_nesting = "yes"
 CarpetRegrid2::snap_to_coarse = "yes"
 CarpetRegrid2::symmetry_rotating180 = "yes"
 
-CarpetIOHDF5::compression_level = 4
+#CarpetIOHDF5::compression_level = 4
 
 CarpetRegrid2::regrid_every = 0
 CarpetRegrid2::num_centres  = 1
@@ -147,7 +147,7 @@ CarpetRegrid2::radius_1[7]  = 1.0   #0.03125
 
 
 
-time::dtfac = 0.25
+time::dtfac = 0.4
 MoL::ODE_Method             = "rk4"
 MoL::MoL_Intermediate_Steps = 4
 MoL::MoL_Num_Scratch_Levels = 1
@@ -300,9 +300,9 @@ ActiveThorns = "AHFinderDirect AHFinder CarpetMask"
 
 AHFinderDirect::find_after_individual_time[1] = 250.0
 AHFinderDirect::output_h_every 	= 2000
-AHFinderDirect::set_mask_for_individual_horizon[1] = "true"
+#AHFinderDirect::set_mask_for_individual_horizon[1] = "true"
 #AHFinderDirect::set_new_style_mask = "true"
-AHFinderDirect::set_old_style_mask = "true"
+#AHFinderDirect::set_old_style_mask = "true"
 
 AHFinderDirect::move_origins = yes
 AHFinderDirect::reshape_while_moving = yes
@@ -342,16 +342,18 @@ SphericalSurface::nghoststheta [0] = 2
 SphericalSurface::nghostsphi   [0] = 2
 SphericalSurface::name         [0] = "App Horizon"
 
+###########################################################
+################# Mask parameters  ########################
+###########################################################
 
 ActiveThorns = "SetMask_SphericalSurface"
 
 SetMask_SphericalSurface::SetMask_SurfaceIndex[0] = 0
 SetMask_SphericalSurface::SetMask_RadiusFactor[0] = 0.6
 SetMask_SphericalSurface::SetMask_TrueShape[0]    = "false"
-###########################################################
-################# Mask parameters  ########################
-###########################################################
 
+CarpetMask::excluded_surface[0] = 0				#new addition
+CarpetMask::excluded_surface_factor[0] = 1.0			#
 
 #CarpetMask::excluded_centre_x[1] = 0.0
 #CarpetMask::excluded_centre_y[1] = 0.0
@@ -369,7 +371,7 @@ SetMask_SphericalSurface::SetMask_TrueShape[0]    = "false"
 
 
 IOBasic::outInfo_every              = 1
-IOBasic::outInfo_vars               = "HydroBase::rho ADMBase::lapse"
+IOBasic::outInfo_vars               = "HydroBase::rho ADMBase::lapse ADMBase::curv ADMBase::metric HydroBase::vel"
 
 IO::out_dir      = $parfile	
 
@@ -384,9 +386,9 @@ IOScalar::outScalar_vars  = "
  ADMBase::metric
  ADMBase::curv
  ML_ADMConstraints::ML_Ham
- ML_ADMConstraints::ML_mom
- 
+ ML_ADMConstraints::ML_mom 
 "
+CarpetIOHDF5::one_file_per_group             = "no"   # this is required by multipatch
 
 #CarpetIOHDF5::out3d_criterion   = "time"
 #CarpetIOHDF5::out3d_dt = 10
@@ -415,7 +417,7 @@ IOASCII::out1D_vars      = "
  ADMBase::metric
  ADMBase::curv
  ML_ADMConstraints::ML_Ham
- ML_ADMConstraints::ML_mom
-
- 
+ ML_ADMConstraints::ML_mom 
 "
+
+
